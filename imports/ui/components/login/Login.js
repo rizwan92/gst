@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/lib/Form';
-import { BrowserRouter as Router,Redirect } from 'react-router-dom'
+import { BrowserRouter as Router,Redirect,withRouter } from 'react-router-dom'
 import { Session } from 'meteor/session';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import Button from 'react-bootstrap/lib/Button';
-export default class Login extends Component {
+import {Meteor} from 'meteor/meteor';
+class Login extends Component {
   constructor() {
     super();
     this.state={
@@ -18,17 +19,25 @@ export default class Login extends Component {
      event.preventDefault();
      const email = this.state.email.trim();
      const password = this.state.password.trim();
+      const router=this;
 
-      Meteor.loginWithPassword(email, password,function(error){
-      if (error) {
-          Bert.alert( error, 'danger', 'growl-top-right' );
-      }else {
+      Meteor.call('user.check',email,password,(error,result)=>{
+        if (result) {
             Bert.alert( 'succefull logged in', 'success', 'growl-top-right' );
-            if (Meteor.userId) {
-            window.location.href = "/";
-            }
-          }
-      });
+            Session.setPersistent('user', result)
+            router.props.history.push('/admin')
+        }else {
+              Meteor.call('shop.check',email,password,function (error,result){
+                if (result) {
+                  Session.setPersistent('shop', result)
+                  router.props.history.push('/home')
+                }else {
+                  Bert.alert( 'email password doesnt match', 'danger', 'growl-top-right' );
+                }
+              });
+        }
+      }
+    )
      this.setState({
        password:'',
      });
@@ -44,7 +53,7 @@ export default class Login extends Component {
 
       <FormGroup controlId="formInlineEmail">
         <ControlLabel>Email</ControlLabel>
-        <FormControl type="email" placeholder="jane.doe@example.com" value={this.state.email}  onChange={this.setValue.bind(this, 'email')} required/>
+        <FormControl type="text" placeholder="jane.doe@example.com" value={this.state.email}  onChange={this.setValue.bind(this, 'email')} required/>
       </FormGroup>
 
         <FormGroup controlId="formInlinePassword">
@@ -59,3 +68,4 @@ export default class Login extends Component {
     );
   }
 }
+export default withRouter(Login);

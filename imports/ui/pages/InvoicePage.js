@@ -14,7 +14,6 @@ class InvoicePage  extends Component {
   render(){
     return(
        <div>
-       {  Meteor.userId() ?  '' :   window.location.href = '/login'}
        {
          this.props.loading ?  <CircularProgressbar percentage={100} initialAnimation/>  :
          <InvoiceJs invoice={this.props.invoice} />
@@ -28,7 +27,6 @@ export default createContainer(() => {
   const loading = !todosHandle.ready();
   return {
       loading,
-      user:  Meteor.users.findOne({ _id: Meteor.userId() }),
       invoice: Invoice.find({}, {sort: {createdAt: -1}}).fetch(),
  };
 }, withRouter(InvoicePage));

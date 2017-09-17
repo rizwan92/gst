@@ -4,12 +4,10 @@ import { check } from 'meteor/check';
 export const Invoice = new Mongo.Collection('invoice');
 
 Meteor.methods({
-  'invoice.insert'(name,number,products) {
-    if (! Meteor.userId()) {
-      throw new Meteor.Error('not-authorized');
-    }
+  'invoice.insert'(userid,shopid,name,number,products) {
     Invoice.insert({
-      usserid:Meteor.userId(),
+      userid:userid,
+      shopid:shopid,
       to:name,
       tonumber:number,
       products:products,

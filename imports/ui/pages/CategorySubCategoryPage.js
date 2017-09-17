@@ -9,7 +9,7 @@ import CityForm from '../components/catSubcat/CityForm';
 import SubCategoryForm from '../components/catSubcat/SubCategoryForm';
 import { SubCategoryApi } from '../../api/subCategory';
 import { CategoryApi } from '../../api/category';
-import { State } from '../../api/state';
+import { StateApi } from '../../api/state';
 import { City } from '../../api/city';
 class CategorySubCategoryPage extends Component {
   render(){
@@ -48,6 +48,6 @@ export default createContainer(() => {
     loading,
     loading1,
     categories: CategoryApi.find({}).fetch(),
-    states: State.find({}).fetch(),
+    states: StateApi.find({}).fetch(),
   };
 }, CategorySubCategoryPage);

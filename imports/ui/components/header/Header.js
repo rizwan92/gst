@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Header.css';
+import { Session } from 'meteor/session';
 import { withRouter,NavLink } from 'react-router-dom'
 import Button from 'react-bootstrap/lib/Button';
 //import AddBranchModal from '../branch/AddBranchModal';
@@ -21,7 +22,7 @@ const data = [
 ];
 const Links = (props) => (
   <div>
-    {data.map((dat, i) => <NavLink activeClassName="selected" key={i} style={{color:'white',padding:10,}} to={dat.link}>{dat.name}</NavLink>)}
+    {data.map((dat, i) => <NavLink activeClassName={dat.name === 'Home'? '' :  'selected' } key={i} style={{color:'white',padding:10,}} to={dat.link}>{dat.name}</NavLink>)}
   </div>
 );
  class Header extends Component {
@@ -29,7 +30,7 @@ const Links = (props) => (
     super();
   }
   logoutHandle(){
-     Meteor.logout();
+     Session.clear();
      this.props.history.push('/');
     }
     loginHandle(){
@@ -45,7 +46,7 @@ const Links = (props) => (
           <div className="headeritem three">
           <Links match={this.props.match}/>
           {
-          Meteor.userId() ?
+          Session.get('user') || Session.get('shop') ?
           <div  style={{color:'white',padding:10,}} onClick={this.logoutHandle.bind(this)}>Logout</div>
           :
           <div  style={{color:'white',padding:10,}} onClick={this.loginHandle.bind(this)}>LogIn</div>

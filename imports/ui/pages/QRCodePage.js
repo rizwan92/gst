@@ -22,9 +22,6 @@ import Col from 'react-bootstrap/lib/Col';
   render(){
     return(
        <div>
-       {
-        Meteor.userId() ?  '' :   window.location.href = '/login'
-      }
       {
         this.props.loading ?  <CircularProgressbar percentage={100} initialAnimation/>  :
         <div>

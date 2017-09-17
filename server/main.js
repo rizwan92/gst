@@ -9,9 +9,8 @@ import '../imports/api/city';
 import '../imports/api/hsnCode';
 import '../imports/api/invoice';
 import '../imports/api/shop';
+import '../imports/api/user';
 
 Meteor.startup(() => {
-  Meteor.publish("myuser", function () {
-  return Meteor.users.find({ _id: Meteor.userId() });
-  });
+
 });

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Session } from 'meteor/session';
 import Form from 'react-bootstrap/lib/Form';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
@@ -178,6 +179,8 @@ let products = this.state.products.slice();
             let stock= prompt('Please Enter stock for '+myproduct.name);
             if (stock) {
               let product = {
+                userid:Session.get('shop').userid,
+                shopid:Session.get('shop')._id,
                 productName:myproduct.name,
                 category:'',
                 subCategory:'',
@@ -200,7 +203,7 @@ let products = this.state.products.slice();
           }
       }
     )
-      Meteor.call('invoice.insert',this.state.username,this.state.usernumber,this.state.products);
+      Meteor.call('invoice.insert',Session.get('shop').userid,Session.get('shop')._id,this.state.username,this.state.usernumber,this.state.products);
       var content = document.getElementById("divcontents");
       var pri = document.getElementById("ifmcontentstoprint").contentWindow;
       pri.document.open();
@@ -275,10 +278,10 @@ let products = this.state.products.slice();
                 <p style={{fontSize:13,margin:5,}}>Address:-{this.props.shop.shopaddress}</p>
               </div>
               <div style={{flex:1}}>
-                <p style={{fontSize:13,margin:5,}}>Mob:-{this.props.user.profile.mobile}</p>
-                <p style={{fontSize:13,margin:5,}}>Email:-{this.props.user.emails[0].address}</p>
-                <p style={{fontSize:13,margin:5,}}>Date:- { this.state.d.getDate()+'/'+this.state.d.getMonth()+'/'+this.state.d.getFullYear()}</p>
-                <p style={{fontSize:13,margin:5,}}>Website:-{this.props.shop.shopwebsite}</p>
+                <p style={{fontSize:13,margin:5,}}>Mob:-{Session.get('shop').shopnumber}</p>
+                <p style={{fontSize:13,margin:5,}}>Email:-{Session.get('shop').shopaddress}</p>
+                <p style={{fontSize:13,margin:5,}}>Date:- { Session.get('shop').createdAt.getDate()+'/'+Session.get('shop').createdAt.getMonth()+'/'+Session.get('shop').createdAt.getFullYear()}</p>
+                <p style={{fontSize:13,margin:5,}}>Website:-{Session.get('shop').shopwebsite}</p>
               </div>
             </div>
 
@@ -326,10 +329,10 @@ let products = this.state.products.slice();
 
             <div style={{display:'flex',justifyContent:'center',flexFlow:'column'}}>
             <h5>Bank Details</h5>
-            <p style={{fontSize:10,margin:0,}}>Bank:-{this.props.shop.accountdetails.bankname +` ( ${this.props.shop.accountdetails.acctype} )`}</p>
-            <p style={{fontSize:10,margin:0,}}>A/c:-{this.props.shop.accountdetails.accname}</p>
-            <p style={{fontSize:10,margin:0,}}>A/c type:-{this.props.shop.accountdetails.acctype}</p>
-            <p style={{fontSize:10,margin:0,}}>IFSC:-{this.props.shop.accountdetails.accifsc}</p>
+            <p style={{fontSize:10,margin:0,}}>Bank:-{Session.get('shop').accdetail.bankname+` ( ${Session.get('shop').accdetail.acctype} )`}</p>
+            <p style={{fontSize:10,margin:0,}}>A/c:-{Session.get('shop').accdetail.accname}</p>
+            <p style={{fontSize:10,margin:0,}}>A/c type:-{Session.get('shop').accdetail.acctype}</p>
+            <p style={{fontSize:10,margin:0,}}>IFSC:-{Session.get('shop').accdetail.accifsc}</p>
             </div>
             </div>
           <iframe id="ifmcontentstoprint"  style={{position: "absolute", top: '-200vh'}}></iframe>
@@ -354,6 +357,8 @@ const styles={
     display:'flex',
     flex:1,
     justifyContent:'center',
+    zIndex:1,
+
   },
   three:{
     display:'flex',

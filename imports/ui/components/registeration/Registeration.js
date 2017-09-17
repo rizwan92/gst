@@ -20,31 +20,26 @@ class Registeration extends Component {
   handleSubmit(event) {
      event.preventDefault();
      const name = this.state.name.trim();
-     const mobile =this.state.mobile.trim();
+     const number =this.state.mobile.trim();
      const email = this.state.email.trim();
      const password = this.state.password.trim();
      const confirmPassword = this.state.confirmPassword.trim();
       if (password===confirmPassword) {
-        Accounts.createUser({
-          email: email,
-          password: password,
-         profile: {
-                 name: name,
-                 mobile: mobile,
-                shops:[],
-             },
-        createdAt:new Date(),
-      }, function (error) {
-           if (error) {
-             Bert.alert( 'Email already Exist', 'danger', 'growl-top-right' );
-           }
-           else {
-             Bert.alert( `Successfull Registered`, 'success', 'growl-top-right' );
-              window.location.href = '/'
-             }
-         }
-      );
 
+        Meteor.call('user.check',email,password ,(error,result)=>{
+          if (result) {
+             Bert.alert( 'Email already Exist', 'danger', 'growl-top-right' );
+          }else {
+            const user={
+              name,email,number,password
+            }
+            Meteor.call('user.insert',user,(er,res)=>{
+              if (!er) {
+                Bert.alert( `Successfull Registered`, 'success', 'growl-top-right' );
+              }
+            });
+          }
+        });
     }else {
       Bert.alert( `password doesn't match`, 'danger', 'growl-top-right' );
 

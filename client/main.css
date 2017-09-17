@@ -9,33 +9,43 @@
   text-align: center;
 }
 
-
+.selected{
+  background-color: #abe2ff;
+  color: white;
+}
 body {
  background: #e2e1e0 !important;
  font-family: Helvetica Neue, Helvetica, Arial, sans-serif !important;
 }
+.mysidebar{
+  height: 100vh;
+  background:#229bdc;
+	border-radius:5px;
+	color:#abe2ff;
+	font-size:12px;
+	font-weight:900;
+  padding: 0!important;
 
-.sidebar a, .sidebar span {
+  }
+.sidebar{
+  font-size: 18px;
+  color: white;
   display: block;
-  margin: 1px 0;
   padding: 20px;
   text-align: center;
   cursor: pointer;
   font-family: sans-serif;
   text-decoration: none!important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-  background: #fff;
-  border-radius: 2px;
+  border-radius: 8px;
   position: relative;
 
 }
 
-.sidebar a, .sidebar span:active{
-
+.sidebar:hover{
+  background-color: #efefef;
 }
 
-/*input form designing*/
+  /*input form designing*/
 
 
 /*input {
@@ -144,7 +154,6 @@ body {
   border-radius: 2px;
   position: relative;
   padding: 1rem;
-  background: blue;
 }
 
 /* product list desigining*/
@@ -217,12 +226,10 @@ body {
 /* billingnamecounter */
 
 .billingnamecounter {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   background: #fff;
   border-radius: 2px;
   position: relative;
-  margin: 1px;
   border-radius: 2px;
 
 }
@@ -234,7 +241,6 @@ body {
 .billincountersearchfilter {
   padding: 1rem;
   height: 80px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   background: #fff;
   border-radius: 2px;

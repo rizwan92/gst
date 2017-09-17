@@ -4,13 +4,9 @@ import { check } from 'meteor/check';
 export const ProductMasterApi = new Mongo.Collection('productMaster');
 Meteor.methods({
   'product.insert'(product) {
-
-    // Make sure the user is logged in before inserting a task
-    if (! Meteor.userId()) {
-      throw new Meteor.Error('not-authorized');
-    }
-
     ProductMasterApi.insert({
+      userid:product.userid,
+      shopid:product.shopid,
       productName:product.productName,
       category:product.category,
       subCategory:product.subCategory,

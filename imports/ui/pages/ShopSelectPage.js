@@ -3,7 +3,7 @@ import {createContainer} from 'meteor/react-meteor-data';
 import CircularProgressbar from 'react-circular-progressbar';
 import { Session } from 'meteor/session';
 import {Route, Link, NavLink, withRouter, Redirect} from 'react-router-dom';
-import {Shop} from '../../api/shop';
+import {ShopApi} from '../../api/shop';
 import Form from 'react-bootstrap/lib/Form';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
@@ -53,6 +53,6 @@ export default createContainer(() => {
   const loading = !todosHandle.ready();
   return {
     loading,
-    shops: Shop.find({usserid: Meteor.userId()}).fetch()
+    shops: ShopApi.find({usserid: Meteor.userId()}).fetch()
   };
 }, withRouter(ShopSelectPage));

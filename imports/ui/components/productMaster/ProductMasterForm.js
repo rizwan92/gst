@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Session } from 'meteor/session';
 import Form from 'react-bootstrap/lib/Form';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
@@ -41,6 +42,8 @@ export default class ProductMasterForm extends Component {
        const status = this.state.status
        const stock = this.state.stock.trim();
         let product = {
+          userid:Session.get('shop').userid,
+          shopid:Session.get('shop')._id,
           productName:productName,
           category:category,
           subCategory:subCategory,

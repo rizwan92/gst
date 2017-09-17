@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Form from 'react-bootstrap/lib/Form';
+import { Session } from 'meteor/session';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
@@ -10,6 +11,8 @@ export default class ShopDetail extends Component {
     super();
     this.state = {
       shopname: '',
+      password: '',
+      shopnumber: '',
       shopownername: '',
       shopgstin: '',
       stateid: '',
@@ -30,6 +33,8 @@ export default class ShopDetail extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const shopname = this.state.shopname.trim();
+    const password = this.state.password.trim();
+    const shopnumber = this.state.password.trim();
     const shopownername = this.state.shopownername.trim();
     const shopgstin = this.state.shopgstin.trim();
     const stateid = this.state.stateid.trim();
@@ -60,6 +65,8 @@ export default class ShopDetail extends Component {
 
     let shopdetail = {
       shopname: shopname,
+      password: password,
+      shopnumber: shopnumber,
       shopownername: shopownername,
       shopgstin: shopgstin,
       stateid: stateid,
@@ -73,10 +80,12 @@ export default class ShopDetail extends Component {
       acctype: acctype,
       accifsc: accifsc
     }
-    Meteor.call('shop.insert', shopdetail, accdetail);
+    Meteor.call('shop.insert', shopdetail, accdetail,Session.get('user')._id);
     Bert.alert(`Account Details Has been updates successfully`, 'success', 'growl-top-right');
     this.setState({
       shopname: '',
+      password: '',
+      shopnumber: '',
       shopownername: '',
       shopgstin: '',
       stateid: '',
@@ -101,6 +110,24 @@ export default class ShopDetail extends Component {
             </Col>
             <Col sm={8}>
               <FormControl type="text" placeholder="Shop Name" value={this.state.shopname} onChange={this.setValue.bind(this, 'shopname')} required/>
+            </Col>
+          </FormGroup>
+
+          <FormGroup >
+            <Col componentClass={ControlLabel} sm={4}>
+            Password
+            </Col>
+            <Col sm={8}>
+              <FormControl type="password" placeholder="password" value={this.state.password} onChange={this.setValue.bind(this, 'password')} required/>
+            </Col>
+          </FormGroup>
+
+          <FormGroup >
+            <Col componentClass={ControlLabel} sm={4}>
+            Number
+            </Col>
+            <Col sm={8}>
+              <FormControl type="text" placeholder="Number" value={this.state.shopnumber} onChange={this.setValue.bind(this, 'shopnumber')} required/>
             </Col>
           </FormGroup>
 

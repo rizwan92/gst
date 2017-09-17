@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-export const State = new Mongo.Collection('state');
+export const StateApi = new Mongo.Collection('state');
 Meteor.methods({
   'state.insert'(state) {
     if (! Meteor.userId()) {
       throw new Meteor.Error('not-authorized');
     }
-    State.insert({
+    StateApi.insert({
       name:state.name,
       code:state.code,
       createdAt: new Date(), // current time
@@ -15,7 +15,7 @@ Meteor.methods({
   },
   'state.remove'(taskId) {
     check(taskId, String);
-    State.remove(taskId);    //Logic to delete the item
+    StateApi.remove(taskId);    //Logic to delete the item
   },
   // 'tasks.setChecked'(taskId, setChecked) {
   //   check(taskId, String);
@@ -26,5 +26,5 @@ Meteor.methods({
 });
 if (Meteor.isServer) {
 Meteor.publish('state', function userPublication() {
-  return State.find();
+  return StateApi.find();
 });}

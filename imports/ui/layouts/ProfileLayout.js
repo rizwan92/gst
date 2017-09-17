@@ -5,8 +5,8 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import { Meteor } from 'meteor/meteor'
-import { State } from '../../api/state';
-import { City } from '../../api/city';
+import { StateApi } from '../../api/state';
+import { CityApi } from '../../api/city';
 import  ProfilePage  from '../pages/ProfilePage';
 import Header from '../components/header/Header';
 
@@ -47,7 +47,7 @@ export default createContainer(() => {
   return {
     loading,
     user:  Meteor.users.findOne({ _id: Meteor.userId() }),
-    states: State.find({}).fetch(),
-    city: City.find({}).fetch(),
+    states: StateApi.find({}).fetch(),
+    city: CityApi.find({}).fetch(),
  };
 }, ProfileLayout);

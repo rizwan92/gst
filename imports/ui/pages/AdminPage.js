@@ -9,7 +9,6 @@ export default class AdminPage  extends Component {
   render(){
     return(
        <div>
-        {  Meteor.userId() ?  '' :   window.location.href = '/login'}
       this is   Admin page
        </div>
     );
