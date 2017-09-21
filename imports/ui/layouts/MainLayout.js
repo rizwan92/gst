@@ -9,6 +9,7 @@ import ReactLoading from 'react-loading';
 import Header from '../components/header/Header';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
+import PurchasePage from '../pages/PurchasePage';
 import ShopSelectPage from '../pages/ShopSelectPage';
 import ProductMasterPage from '../pages/ProductMasterPage';
 import CategorySubCategoryPage from '../pages/CategorySubCategoryPage';
@@ -16,6 +17,7 @@ import QRCodePage from '../pages/QRCodePage';
 import ReportPage from '../pages/ReportPage';
 import InvoicePage from '../pages/InvoicePage';
 import InvoiceDetail from '../components/invoice/InvoiceDetail';
+import PurchaseDetail from '../components/purchase/PurchaseDetail';
 import {ProductMasterApi} from '../../api/productMaster';
 import {Invoice} from '../../api/invoice';
 import {ShopApi} from '../../api/shop';
@@ -26,13 +28,16 @@ const data = [
     name: 'Home'
   }, {
     link: '/home/productmaster',
-    name: 'Product Master'
-  }, {
-    link: '/home/qrcode',
-    name: 'QRCodes'
+    name: 'Products'
   }, {
     link: '/home/invoice',
     name: 'Invoice'
+  }, {
+    link: '/home/purchase',
+    name: 'Purchase'
+  }, {
+    link: '/home/qrcode',
+    name: 'QRCodes'
   }, {
     link: '/home/report',
     name: 'Reports'
@@ -65,7 +70,7 @@ export default class MainLayout extends Component {
              <div>
             <Header name="Accounting"/>
             <div className="container-fluid">
-              <Row style={{  marginTop: 50  }}>
+              <Row style={{  marginTop: 60  }}>
                 <Col sm={2}  className="mysidebar">
                   <Links match={this.props.match}/>
                 </Col>
@@ -77,6 +82,8 @@ export default class MainLayout extends Component {
                   <Route exact path="/home/invoice/:id" component={InvoiceDetail}/>
                   <Route exact path="/home/qrcode" component={QRCodePage}/>
                   <Route exact path="/home/report" component={ReportPage}/>
+                  <Route exact path="/home/purchase" component={PurchasePage}/>
+                  <Route exact path="/home/purchase/:id" component={PurchaseDetail}/>
                 </Col>
               </Row>
             </div>

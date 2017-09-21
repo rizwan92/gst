@@ -21,6 +21,7 @@ export default class HomePage  extends Component {
     Tracker.autorun(() => {
       Meteor.subscribe('productMaster');
       Meteor.subscribe('myuser');
+      Meteor.subscribe('purchase');
       const Products= ProductMasterApi.find().fetch();
       this.setState({
         products:Products,

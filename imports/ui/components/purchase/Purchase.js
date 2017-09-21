@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import { NavLink } from 'react-router-dom';
-export default class InvoiceJs  extends Component {
+export default class Purchase  extends Component {
   constructor() {
     super();
       this.state={
@@ -21,12 +21,12 @@ export default class InvoiceJs  extends Component {
   this.setState(object);
 }
   render(){
-    const monthinvoice = this.props.invoice.filter((invoice)=>{
-      return(invoice.createdAt.getMonth()==new Date().getMonth());
+    const monthinvoice = this.props.purchase.filter((purchase)=>{
+      return(purchase.createdAt.getMonth()==new Date().getMonth());
     })
-    let filterText=this.props.invoice.filter(
-       (invoice)=>{
-     return (invoice.to.toLowerCase().indexOf(this.state.filterText.toLowerCase()) !==-1);
+    let filterText=this.props.purchase.filter(
+       (purchase)=>{
+     return (purchase.cname.toLowerCase().indexOf(this.state.filterText.toLowerCase()) !==-1);
    }
  );
 
@@ -43,8 +43,8 @@ export default class InvoiceJs  extends Component {
        <div className="invoicelistcontainer">
        {filterText.map((invoice,i)=>
           <div  className='invoice-list-div' key={i} >
-            <div className='invoice-list-subdiv-name'> <NavLink  className='invoive-navlink' style={{display:'flex',flex:1}} to={`invoice/${invoice._id}`} >{invoice.to.toUpperCase()}</NavLink></div>
-            <div className='invoice-list-subdiv-number'>{invoice.tonumber}</div>
+            <div className='invoice-list-subdiv-name'> <NavLink  className='invoive-navlink' style={{display:'flex',flex:1}} to={`purchase/${invoice._id}`} >{invoice.cname.toUpperCase()}</NavLink></div>
+            <div className='invoice-list-subdiv-number'>{invoice.cnumber}</div>
             <div className='invoice-list-subdiv-date'>{`${invoice.createdAt.getDate()}/${invoice.createdAt.getMonth()}/${invoice.createdAt.getFullYear()}`}</div>
             <div  onClick={ ()=> this.deleteProduct(invoice._id) }style={{position:'relative',top:0,right:2,paddingLeft:10,paddingRight:10}}><span style={{color:'red'}} className="glyphicon glyphicon-trash"></span></div>
           </div>

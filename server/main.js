@@ -8,6 +8,7 @@ import '../imports/api/state';
 import '../imports/api/city';
 import '../imports/api/hsnCode';
 import '../imports/api/invoice';
+import '../imports/api/purchase';
 import '../imports/api/shop';
 import '../imports/api/user';
 

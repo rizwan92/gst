@@ -5,26 +5,6 @@ import { withRouter,NavLink } from 'react-router-dom'
 import Button from 'react-bootstrap/lib/Button';
 //import AddBranchModal from '../branch/AddBranchModal';
 
-const data = [
-  {
-    link: '/home',
-    name: 'Home'
-  }, {
-    link: '/home/productmaster',
-    name: 'Products'
-  }, {
-    link: '/home/qrcode',
-    name: 'QRCodes'
-  }, {
-    link: '/home/invoice',
-    name: 'Invoice'
-  }
-];
-const Links = (props) => (
-  <div>
-    {data.map((dat, i) => <NavLink activeClassName={dat.name === 'Home'? '' :  'selected' } key={i} style={{color:'white',padding:10,}} to={dat.link}>{dat.name}</NavLink>)}
-  </div>
-);
  class Header extends Component {
   constructor(){
     super();
@@ -44,7 +24,6 @@ const Links = (props) => (
       <div className="header">
           <div className="headeritem one" onClick={this.reload.bind(this)}>{this.props.name}</div>
           <div className="headeritem three">
-          <Links match={this.props.match}/>
           {
           Session.get('user') || Session.get('shop') ?
           <div  style={{color:'white',padding:10,}} onClick={this.logoutHandle.bind(this)}>Logout</div>

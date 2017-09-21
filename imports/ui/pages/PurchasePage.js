@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
-import {BrowserRouter as Router, Route } from 'react-router-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import CircularProgressbar from 'react-circular-progressbar';
-import { Invoice } from '../../api/invoice';
-import InvoiceJs from '../components/invoice/Invoice';
+import { PurchaseApi } from '../../api/purchase';
+import Purchase from '../components/purchase/Purchase';
 import { Meteor } from 'meteor/meteor'
-class InvoicePage  extends Component {
+class PurchasePage  extends Component {
   constructor() {
     super();
 
@@ -16,17 +15,17 @@ class InvoicePage  extends Component {
        <div className="invoicecontainer">
        {
          this.props.loading ?  <CircularProgressbar percentage={100} initialAnimation/>  :
-         <InvoiceJs invoice={this.props.invoice} />
+         <Purchase purchase={this.props.purchase} />
        }
        </div>
        );
   }
 }
 export default createContainer(() => {
-  const todosHandle = Meteor.subscribe('invoice');
+  const todosHandle = Meteor.subscribe('purchase');
   const loading = !todosHandle.ready();
   return {
       loading,
-      invoice: Invoice.find({}, {sort: {createdAt: -1}}).fetch(),
+      purchase: PurchaseApi.find({}, {sort: {createdAt: -1}}).fetch(),
  };
-}, withRouter(InvoicePage));
+}, withRouter(PurchasePage));

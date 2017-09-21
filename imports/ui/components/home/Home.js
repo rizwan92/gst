@@ -16,16 +16,18 @@ var PrintTemplate = require ('react-print');
 export default class Home  extends Component {
   constructor() {
     super();
-    this.state = {};
-   this.state.d = new Date();
-   this.state.username = "";
-   this.state.usernumber = "";
-   this.state.filterText = "";
-   this.state.autocompletetext = "";
-   this.state.name = "";
-   this.state.number = "";
-   this.state.total = 0;
-   this.state.products = [];
+    this.state = {
+      d : new Date(),
+      isInvoice : true,
+      username : "",
+      usernumber : "",
+      filterText : "",
+      autocompletetext : "",
+      name : "",
+      number : "",
+      total : 0,
+      products : [],
+    };
   }
   handleUserInput(filterText) {
    this.setState({filterText: filterText});
@@ -35,6 +37,26 @@ export default class Home  extends Component {
    this.state.products.splice(index, 1);
    this.setState(this.state.products);
  };
+
+ createPurchaseInvoice(){
+   if (this.state.username==='') {
+     Bert.alert( 'Enter Billing name', 'danger', 'growl-top-right' );
+     return false;
+   }
+   if (this.state.usernumber==='') {
+     Bert.alert( 'Enter Billing number', 'danger', 'growl-top-right' );
+     return false;
+   }
+
+   if (this.state.products.length==0) {
+     Bert.alert( 'Insert Product first', 'danger', 'growl-top-right' );
+    }else {
+        Meteor.call('purchase.insert',Session.get('shop').userid,Session.get('shop')._id,this.state.username,this.state.usernumber,this.state.products)
+        Bert.alert( 'SuccessFully Created Purchaseinvoice', 'success', 'growl-top-right' );
+
+      }
+ }
+
  handleAddEvent(evt) {
    let id = (+ new Date() + Math.floor(Math.random() * 999999)).toString(36);
    let product = {
@@ -231,22 +253,29 @@ let products = this.state.products.slice();
 );
     return(
       <div>
-        <div style={styles.container} className="billingnamecounter">
-            <div style={styles.one1}>
-                     <FormControl className="billingcounterinput" type="text" placeholder="Name" value={this.state.username}onChange={this.setValue.bind(this, 'username')} />
-                     <FormControl className="billingcounterinput" type="number" placeholder="Number" value={this.state.usernumber}onChange={this.setValue.bind(this, 'usernumber')} />
+        <div  className="billingcontainer">
+            <div className="billingnamecounter">
+                  <input className="billingcounterinput" type="text" placeholder="Name" value={this.state.username}onChange={this.setValue.bind(this, 'username')} />
+                  <input className="billingcounterinput" type="number" placeholder="Number" value={this.state.usernumber}onChange={this.setValue.bind(this, 'usernumber')} />
             </div>
-            <div style={styles.two1}>
+            <div>
+              <div className="shodnameclass">{Session.get('shop').shopname}</div>
+              <div className="shopdetailclass">{Session.get('shop').shopaddress}</div>
+              <div className="shopdetailclass">{Session.get('shop').shopwebsite}</div>
+              <div className="shopdetailclass">{Session.get('shop').shopnumber}</div>
+              <div className="shopdetailclass">{Session.get('shop').shopgstin}</div>
+              <div className="shopdetailclass">Purchase  <input type="checkbox"  onClick={()=>{this.setState({isInvoice:!this.state.isInvoice})}} /></div>
             </div>
         </div>
 
         <div style={styles.container} className="billincountersearchfilter">
           <div style={styles.one}>
-          <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput.bind(this)}/>
+          <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput.bind(this)} />
           </div>
           <div style={styles.two}>
           <Autocomplete
-                     inputProps={{ placeholder:'Search..',className:'form-control'}}
+
+                     inputProps={{ placeholder:'Search..',className:'billincountersearch'}}
                      getItemValue={(item) => item._id}
                      items={filterProducts}
                      renderItem={(item, isHighlighted) =>
@@ -268,7 +297,7 @@ let products = this.state.products.slice();
                      }}
                  />
           </div>
-          <div style={styles.three}><h4>Total:{total[total.length-1]}</h4></div>
+          <div style={styles.three} className="total">Total:{total[total.length-1]}</div>
         </div>
             <div id="divcontents" style={{display:'none',padding:10}}>
             <div style={{display:'flex',flex:1}}>
@@ -336,7 +365,7 @@ let products = this.state.products.slice();
             </div>
             </div>
           <iframe id="ifmcontentstoprint"  style={{position: "absolute", top: '-200vh'}}></iframe>
-         <ProductTable onProductTableUpdate={this.handleProductTable.bind(this)} print={this.windowPrint.bind(this)} onRowAdd={this.handleAddEvent.bind(this)} onRowDel={this.handleRowDel.bind(this)} products={this.state.products} filterText={this.state.filterText}/>
+         <ProductTable isInvoice={this.state.isInvoice} purchase={this.createPurchaseInvoice.bind(this)} onProductTableUpdate={this.handleProductTable.bind(this)} print={this.windowPrint.bind(this)} onRowAdd={this.handleAddEvent.bind(this)} onRowDel={this.handleRowDel.bind(this)} products={this.state.products} filterText={this.state.filterText}/>
 
        </div>
     );
@@ -366,19 +395,6 @@ const styles={
     justifyContent:'center',
     alignItems:'center'
   },
-  one1:{
-    flex:1,
-    display:'flex',
-    flexFlow:'column',
-    justifyContent:'center',
-  },
-   two1:{
-      display:'flex',
-      flexFlow:'column',
-      flex:1,
-      justifyContent:'center',
-
-    },
 
 }
 
@@ -390,7 +406,7 @@ class SearchBar extends React.Component {
     return (
       <div>
 
-        <input type="text" placeholder="Filter..." className="form-control" value={this.props.filterText} ref="filterTextInput" onChange={this.handleChange.bind(this)}/>
+        <input type="text" placeholder="Filter..." className="billincounterfilter" value={this.props.filterText} ref="filterTextInput" onChange={this.handleChange.bind(this)}/>
 
       </div>
 
@@ -401,6 +417,9 @@ class SearchBar extends React.Component {
 
 class ProductTable extends React.Component {
 
+  createPurchaseInvoice(){
+    this.props.purchase();
+  }
   render() {
     let onProductTableUpdate = this.props.onProductTableUpdate;
     let rowDel = this.props.onRowDel;
@@ -433,7 +452,12 @@ class ProductTable extends React.Component {
 
         </Table>
         <button type="button" onClick={this.props.onRowAdd} className="btn btn-primary pull-right" style={{margin:5}}><span className="glyphicon glyphicon-plus"></span></button>
-        <button type="button" onClick={this.props.print}    className="btn btn-success pull-right" style={{margin:5}}><span className="glyphicon glyphicon-print"></span> Done</button>
+        {
+          this.props.isInvoice ?
+          <button type="button" onClick={this.props.print}    className="btn btn-success pull-right" style={{margin:5}}><span className="glyphicon glyphicon-print"></span> Invoice</button>
+            :
+          <button type="button" onClick={this.createPurchaseInvoice.bind(this)}    className="btn btn-success pull-right" style={{margin:5}}><span className="glyphicon glyphicon-print"></span> Purchase</button>
+        }
       </div>
     );
 
