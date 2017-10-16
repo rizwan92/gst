@@ -1,0 +1,37 @@
+<div  className="reportbutton reportblueblue">
+  <strong className="reporttitle">Teach me to file my taxes</strong>
+  <span className="reportdetailsdetails">
+      Teach Me <i className="icon-time"></i> exp:
+    <strong>Mar 12, 2013</strong>
+  </span>
+  <span className="reportprice">
+    $30 <strong>&rsaquo;</strong>
+  </span>
+</div>
+========================================================================
+let resultproducts= [];
+let ultimateresultproducts= [];
+this.state.products.map((product)=>{
+
+  if (this.state.invoice.length!==0) {
+
+
+    let newinvoice =  this.state.invoice.filter((invoice)=>{
+
+        let invoiceproduct=invoice.products.filter((invoiceproduct)=>{
+            if (invoiceproduct.pid == product._id) {
+              resultproducts.push(invoiceproduct)
+            }
+
+        })
+      })
+
+  }
+})
+if (resultproducts.length != 0) {
+  resultproducts.map((rproduct)=>{
+
+  })
+
+}
+============================================================================

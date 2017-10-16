@@ -36,11 +36,11 @@ const data = [
     link: '/home/purchase',
     name: 'Purchase'
   }, {
-    link: '/home/qrcode',
-    name: 'QRCodes'
-  }, {
     link: '/home/report',
     name: 'Reports'
+  }, {
+    link: '/home/qrcode',
+    name: 'QRCodes'
   }
 ];
 const Links = (props) => (

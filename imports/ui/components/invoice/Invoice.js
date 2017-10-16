@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
-import { NavLink } from 'react-router-dom';
-export default class InvoiceJs  extends Component {
+import { NavLink ,withRouter} from 'react-router-dom';
+class InvoiceJs  extends Component {
   constructor() {
     super();
       this.state={
@@ -14,16 +14,37 @@ export default class InvoiceJs  extends Component {
    Meteor.call('invoice.remove',id);
     }
 }
-
+    handleNavigation(id){
+       this.props.history.push(`invoice/${id}`);
+    }
  setValue(field, event) {
   let object = {};
   object[field] = event.target.value;
   this.setState(object);
 }
   render(){
+    let nowdate = new Date();
+    let date= nowdate.getDate()
+    let month=nowdate.getMonth()
+    let year =nowdate.getFullYear()
+    let formonth= new Date(`${year}/${month}`);
+    let forweek= new Date(`${year}/${++month}`);
+    let fortoday  = new Date(`${year}/${++month}`);
+    console.log(nowdate);
+    console.log(formonth);
     const monthinvoice = this.props.invoice.filter((invoice)=>{
-      return(invoice.createdAt.getMonth()==new Date().getMonth());
+      if (invoice.createdAt < nowdate && invoice.createdAt > formonth) {
+        return(invoice);
+      }
     })
+    console.log(monthinvoice);
+    const todayinvoice = this.props.invoice.filter((invoice)=>{
+      if (invoice.createdAt< nowdate && invoice.createdAt > formonth) {
+        return(invoice);
+      }
+    })
+
+    console.log(monthinvoice);
     let filterText=this.props.invoice.filter(
        (invoice)=>{
      return (invoice.to.toLowerCase().indexOf(this.state.filterText.toLowerCase()) !==-1);
@@ -43,10 +64,11 @@ export default class InvoiceJs  extends Component {
        <div className="invoicelistcontainer">
        {filterText.map((invoice,i)=>
           <div  className='invoice-list-div' key={i} >
+            <div className="invoiceavatar" onClick={this.handleNavigation.bind(this,invoice._id)}>{invoice.to[0]}</div>
             <div className='invoice-list-subdiv-name'> <NavLink  className='invoive-navlink' style={{display:'flex',flex:1}} to={`invoice/${invoice._id}`} >{invoice.to.toUpperCase()}</NavLink></div>
             <div className='invoice-list-subdiv-number'>{invoice.tonumber}</div>
             <div className='invoice-list-subdiv-date'>{`${invoice.createdAt.getDate()}/${invoice.createdAt.getMonth()}/${invoice.createdAt.getFullYear()}`}</div>
-            <div  onClick={ ()=> this.deleteProduct(invoice._id) }style={{position:'relative',top:0,right:2,paddingLeft:10,paddingRight:10}}><span style={{color:'red'}} className="glyphicon glyphicon-trash"></span></div>
+            <div  onClick={ ()=> this.deleteProduct(invoice._id) }style={{position:'relative',top:0,right:2,paddingLeft:10,paddingRight:10}}><span style={{color:'#999'}} className="glyphicon glyphicon-trash btn-lg"></span></div>
           </div>
        )}
        </div>
@@ -54,3 +76,4 @@ export default class InvoiceJs  extends Component {
     );
   }
 }
+export default withRouter(InvoiceJs);

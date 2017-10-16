@@ -14,7 +14,9 @@ export default class Purchase  extends Component {
    Meteor.call('invoice.remove',id);
     }
 }
-
+handleNavigation(id){
+   this.props.history.push(`invoice/${id}`);
+}
  setValue(field, event) {
   let object = {};
   object[field] = event.target.value;
@@ -43,6 +45,7 @@ export default class Purchase  extends Component {
        <div className="invoicelistcontainer">
        {filterText.map((invoice,i)=>
           <div  className='invoice-list-div' key={i} >
+          <div className="invoiceavatar" onClick={this.handleNavigation.bind(this,invoice._id)}>{invoice.cname[0]}</div>
             <div className='invoice-list-subdiv-name'> <NavLink  className='invoive-navlink' style={{display:'flex',flex:1}} to={`purchase/${invoice._id}`} >{invoice.cname.toUpperCase()}</NavLink></div>
             <div className='invoice-list-subdiv-number'>{invoice.cnumber}</div>
             <div className='invoice-list-subdiv-date'>{`${invoice.createdAt.getDate()}/${invoice.createdAt.getMonth()}/${invoice.createdAt.getFullYear()}`}</div>

@@ -299,7 +299,14 @@ let products = this.state.products.slice();
           </div>
           <div style={styles.three} className="total">Total:{total[total.length-1]}</div>
         </div>
+
+
             <div id="divcontents" style={{display:'none',padding:10}}>
+
+
+
+
+
             <div style={{display:'flex',flex:1}}>
               <div style={{flex:1}}>
                 <h1 style={{fontSize:13,margin:5,}}>{this.props.shop.shopname}</h1>
@@ -363,8 +370,80 @@ let products = this.state.products.slice();
             <p style={{fontSize:10,margin:0,}}>A/c type:-{Session.get('shop').accdetail.acctype}</p>
             <p style={{fontSize:10,margin:0,}}>IFSC:-{Session.get('shop').accdetail.accifsc}</p>
             </div>
+
+            <br />
+            <br />
+            <hr />
+            <br />
+            <br />
+
+            <div style={{display:'flex',flex:1}}>
+              <div style={{flex:1}}>
+                <h1 style={{fontSize:13,margin:5,}}>{this.props.shop.shopname}</h1>
+                <p style={{fontSize:13,margin:5,}}>GSTIN:-{this.props.shop.shopgstin}</p>
+                <p style={{fontSize:13,margin:5,}}>Address:-{this.props.shop.shopaddress}</p>
+              </div>
+              <div style={{flex:1}}>
+                <p style={{fontSize:13,margin:5,}}>Mob:-{Session.get('shop').shopnumber}</p>
+                <p style={{fontSize:13,margin:5,}}>Email:-{Session.get('shop').shopaddress}</p>
+                <p style={{fontSize:13,margin:5,}}>Date:- { Session.get('shop').createdAt.getDate()+'/'+Session.get('shop').createdAt.getMonth()+'/'+Session.get('shop').createdAt.getFullYear()}</p>
+                <p style={{fontSize:13,margin:5,}}>Website:-{Session.get('shop').shopwebsite}</p>
+              </div>
             </div>
-          <iframe id="ifmcontentstoprint"  style={{position: "absolute", top: '-200vh'}}></iframe>
+
+              <hr />
+
+              <div style={{display:'flex',flex:1,flexFlow:'column'}}>
+                <div>To,</div>
+                <div style={{display:'flex',justifyContent:'center',flexFlow:'column'}}>
+                <div style={{paddingLeft:50,fontSize:13,}}>{this.state.username}</div>
+                <div style={{paddingLeft:50,fontSize:13,}}>{this.state.usernumber}</div>
+                </div>
+              </div>
+
+              <hr />
+              <br />
+
+            <table width="100%" >
+              <thead >
+                <tr>
+                  <th style={{fontSize:12,}}>Name</th>
+                  <th style={{borderLeft: '0.5px solid black',fontSize:12,}}>Price</th>
+                  <th style={{borderLeft: '0.5px solid black',fontSize:12,}}>Quantity</th>
+                  <th style={{borderLeft: '0.5px solid black',fontSize:12,}}>Discount</th>
+                  <th style={{borderLeft: '0.5px solid black',fontSize:12,}}>CGST/SGST</th>
+                  <th style={{borderLeft: '0.5px solid black',fontSize:12,}}>Amount</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {this.state.products.map(
+                  (product,i)=>
+                  <tr key={i} >
+                  <td style={{fontSize:11}}>{product.name}</td>
+                  <td style={{textAlign:'center',fontSize:11,}}>{product.price}</td>
+                  <td style={{textAlign:'center',fontSize:11,}}>{product.qty}</td>
+                  <td style={{textAlign:'center',fontSize:11,}}>{product.discount}</td>
+                  <td style={{textAlign:'center',fontSize:11,}}>{`${parseFloat(product.tax)/2}/${parseFloat(product.tax)/2}`}</td>
+                  <td style={{textAlign:'center',fontSize:11,}}>{product.amount}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+
+            <hr />
+
+            <div style={{display:'flex',justifyContent:'center',flexFlow:'column'}}>
+            <h5>Bank Details</h5>
+            <p style={{fontSize:10,margin:0,}}>Bank:-{Session.get('shop').accdetail.bankname+` ( ${Session.get('shop').accdetail.acctype} )`}</p>
+            <p style={{fontSize:10,margin:0,}}>A/c:-{Session.get('shop').accdetail.accname}</p>
+            <p style={{fontSize:10,margin:0,}}>A/c type:-{Session.get('shop').accdetail.acctype}</p>
+            <p style={{fontSize:10,margin:0,}}>IFSC:-{Session.get('shop').accdetail.accifsc}</p>
+            </div>
+
+
+            </div>
+          <iframe id="ifmcontentstoprint"  style={{position: "absolute", top: '-100vh'}}></iframe>
          <ProductTable isInvoice={this.state.isInvoice} purchase={this.createPurchaseInvoice.bind(this)} onProductTableUpdate={this.handleProductTable.bind(this)} print={this.windowPrint.bind(this)} onRowAdd={this.handleAddEvent.bind(this)} onRowDel={this.handleRowDel.bind(this)} products={this.state.products} filterText={this.state.filterText}/>
 
        </div>

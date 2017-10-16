@@ -14,4 +14,12 @@ import '../imports/api/user';
 
 Meteor.startup(() => {
 
+  Meteor.publish('productinvoice', function userPublication() {
+    return ProductMasterApi.find().forEach(product => {
+  let sum = 0
+  Invoice.find({products:{$elemMatch:{pid:product._id}}}).forEach(invoice => {
+    sum += invoice.products.find(p => p._id == product._id).qty
+  })
+})
+  });
 });
